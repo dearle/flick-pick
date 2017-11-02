@@ -8,6 +8,7 @@ router.get('/api/lightning', apiController.getTwoMovies);
 router.post('/api/lightning', apiController.handleLightningSelection);
 router.get('/api/results/user', apiController.getSmartUserResults);
 router.get('/api/results/top', apiController.getTopResults);
+router.get('/api/results/random', apiController.getRandomResults);
 router.get('/api/quote', apiController.getQuote);
 router.post('/api/trailer', apiController.getTrailer);
 router.get('/api/tagCreation', apiController.populateTags);
@@ -37,7 +38,7 @@ router.get('/auth/facebook/callback',
     if (req.user.loginNumber === 1) {
       res.redirect('/#/launchPad');
     } else {
-      res.redirect('http://localhost:3000/#');
+      res.redirect('/');
       // res.redirect('/');
     }
   });
@@ -65,7 +66,7 @@ router.get('/api/testme', (req, res) => {
 
 router.get('/account', (req, res) => {
   if (req.isAuthenticated()) {
-    apiController.checkLoginTrophy(req.user)
+    apiController.checkTrophy({ user: req.user, trophy: [] }, 2, true)
       .then((userAndTrophyObj) => {
         res.send(userAndTrophyObj);
         return userAndTrophyObj;

@@ -5,7 +5,7 @@ let count = 0;
 
 // This long const prevents a server call we don't HAVE to make.
 const trophyIDs = [
-  'LaunchPad1',
+  'LaunchPad1', 'TrophyHunter15', 'TrophyHunter32',
   'Login1', 'Login10', 'Login50',
   'Like1', 'Like10', 'Like50',
   'Dislike1', 'Dislike10', 'Dislike50',
@@ -15,8 +15,7 @@ const trophyIDs = [
   'Comedy1', 'Comedy10', 'Comedy50',
   'Drama1', 'Drama10', 'Drama50',
   'Lightning1', 'Lightning10', 'Lightning50',
-  'MovieNight1', 'MovieNight10',
-  'TrophyHunter15', 'TrophyHunter32'
+  'MovieNight1', 'MovieNight10'
 ];
 
 class DashboardTrophies extends React.Component {
@@ -56,13 +55,11 @@ class DashboardTrophies extends React.Component {
           <div className="col-lg-11">
             <div className="trophy-box badgeList">
               <div>
-                {this.props.trophies.length > 0 &&
-                trophyIDs.slice(start, start + 3).map(trophyString => {
+                {trophyIDs.slice(start, start + 3).map(trophyString => {
                   const earned = this.props.trophies.includes(trophyString);
                   return (
-                    <div className="badge-box">
+                    <div key={count += 1} className="badge-box">
                       <div
-                        key={count += 1}
                         id={trophyString}
                         className={`badges${earned ? '' : ' badge-disabled'}`}
                       />

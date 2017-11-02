@@ -9,6 +9,7 @@ import DropDownMenu from '../components/dropDownMenu.jsx';
 import { setUserReViewSetting, toggleUserReViewSetting } from '../actions/actions.js';
 
 const tagsCountCutoff = 0;
+let loadingText = `Loading your preference data...`;
 
 const calcDyanmicCutoff = (n, quantile) => Math.floor((n + 1) / quantile);
 
@@ -92,6 +93,9 @@ class Dashboard extends React.Component {
   }
 
   componentWillMount() {
+    if (!this.props.auth.isLoggedIn) {
+      return loadingText = `Please log in to view your profile.`;
+    }
     this.getUserInfo();
   }
 
@@ -120,6 +124,8 @@ class Dashboard extends React.Component {
 
   // toggle switch for user reView setting
   changeUserReViewSetting() {
+    if (!this.props.isLoggedIn) return;
+
     this.updateUserReViewSetting()
       .then(() => {
         this.props.toggleUserReViewSetting();
@@ -127,6 +133,8 @@ class Dashboard extends React.Component {
   }
 
   updateUserReViewSetting() {
+    if (!this.props.isLoggedIn) return;
+    
     return axios.post('/api/dashboard/updateUserSettings', {
       id: this.props.auth.user.id,
       reView: !this.props.userReViewSetting
@@ -280,14 +288,14 @@ class Dashboard extends React.Component {
     return (
       <div className="container-fluid">
         <div className="row">
-          <div className="col-lg-4 pull-left">
+          <div className="col-sm-4 pull-left">
             <DashboardUserProfile
               user={this.props.auth.user}
               changeUserReViewSetting={this.changeUserReViewSetting}
               reViewSetting={this.props.userReViewSetting}
             />
           </div>
-          <div className="col-lg-6 pull-right">
+          <div className="col-sm-6 pull-right">
             <DashboardTrophies trophies={this.state.earnedTrophies} />
           </div>
         </div>
@@ -298,26 +306,26 @@ class Dashboard extends React.Component {
             this.state.genreSortedBySelectionPct ?
               <div className="dashboard-charts">
                 <div className="row">
-                  <div className="col-lg-6">
+                  <div className="col-sm-6">
                     <DropDownMenu
                       onSelect={this.absNumChartsDropDownHandler}
                     />
                   </div>
-                  <div className="col-lg-6">
+                  <div className="col-sm-6">
                     <DropDownMenu
                       onSelect={this.pctChartsDropDownHandler}
                     />
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-lg-6">
+                  <div className="col-sm-6">
                     <PieChart
                       title={this.state.absNumChartsTitle}
                       labels={this.state.absNumChartsLabels}
                       data={this.state.absNumChartsData}
                     />
                   </div>
-                  <div className="col-lg-6">
+                  <div className="col-sm-6">
                     <BarChart
                       title={this.state.pctChartsTitle}
                       labels={this.state.pctChartsLabels}
@@ -326,7 +334,7 @@ class Dashboard extends React.Component {
                   </div>
                 </div>
               </div>
-            : <h1 className="col-sm-12">Loading your preference data...</h1>
+            : <h1 className="col-sm-12">{loadingText}</h1>
             }
         </div>
       </div>
