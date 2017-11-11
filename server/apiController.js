@@ -1,3 +1,5 @@
+///////////////// Refactor and split up code
+
 const axios = require('axios');
 const Sequelize = require('sequelize');
 const db = require('../database/dbsetup.js');
@@ -677,6 +679,8 @@ const getDetailedMovieInformation = movieUrl =>
       return movieFromDb;
     });
 
+////////////////////////// Combine funcs below make one like func
+//////////////////////////
 module.exports.handleLikeOrDislikeFromSearch = (req, res) => {
   console.log(req.body.movie);
   const movieUrl = omdbIMDBSearchUrl + req.body.movie.imdbID;
